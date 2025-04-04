@@ -1,24 +1,19 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 
 	"golang-web-app/config"
-	"golang-web-app/handlers"
 )
 
 func main() {
-	config.ConnectDB() // conecta com o banco
+	config.ConnectDB()
 
-	// Arquivos estáticos
-	fs := http.FileServer(http.Dir("public"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "Servidor funcionando na porta 8000 🚀")
+	})
 
-	// Rotas
-	http.HandleFunc("/", handlers.HomeHandler)
-	http.HandleFunc("/login", handlers.LoginHandler)
-
-	log.Println("Servidor rodando em http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("🌐 Servidor iniciado em http://localhost:8000")
+	http.ListenAndServe(":8000", nil)
 }

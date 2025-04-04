@@ -5,15 +5,33 @@ services:
     image: mysql:8.0
     container_name: go-mysql
     restart: always
+    command: mysqld --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: goapp
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
-      - "3307:3307"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf  # 👈 adiciona o my.cnf aqui
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+    environment:
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: goapp
 
 volumes:
   mysql_data:
