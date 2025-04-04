@@ -1,19 +1,36 @@
 package main
 
 import (
-	"fmt"
+	"html/template"
+	"log"
 	"net/http"
+	"os"
 
 	"golang-web-app/config"
 )
 
 func main() {
+	config.LoadEnv()
 	config.ConnectDB()
 
+	// Rota para arquivos estáticos
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	// Página principal - renderiza o template
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Servidor funcionando na porta 8000 🚀")
+		tmpl, err := template.ParseFiles("templates/index.html")
+		if err != nil {
+			http.Error(w, "Erro ao carregar o template", http.StatusInternalServerError)
+			return
+		}
+		tmpl.Execute(w, nil)
 	})
 
-	fmt.Println("🌐 Servidor iniciado em http://localhost:8000")
-	http.ListenAndServe(":8000", nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
+	log.Println("Servidor rodando na porta " + port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

@@ -1,4 +1,29 @@
-{{ define "title" }}Página Inicial{{ end }}
-{{ define "content" }}
-<h1>Bem-vindo ao site em Go!</h1>
-{{ end }}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Golang Web App</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js"></script>
+    <img src="/static/images/logo.png" alt="Logo">
+
+</head>
+
+<body>
+    <h1>Consulta de usuários</h1>
+
+    <div id="user-list"></div>
+
+    <h2>Adicionar Usuário</h2>
+    <form id="user-form">
+        <input type="text" id="nome" placeholder="Nome" required />
+        <input type="text" id="email" placeholder="Email" required />
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
