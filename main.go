@@ -19,7 +19,7 @@ func main() {
 
 	// Página principal - renderiza o template
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("templates/index.html")
+		tmpl, err := template.ParseFiles("templates/login.html")
 		if err != nil {
 			http.Error(w, "Erro ao carregar o template", http.StatusInternalServerError)
 			return
